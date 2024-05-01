@@ -1,0 +1,598 @@
+1.Plus Minus 
+
+Given an array of integers, calculate the ratios of its elements that are positive, negative, and zero. Print the decimal value of each fraction on a new line with  places after the decimal.
+
+Note: This challenge introduces precision problems. The test cases are scaled to six decimal places, though answers with absolute error of up to  are acceptable.
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the plusMinus function below.
+def plusMinus(arr):
+    p=0
+    l=0
+    q=0
+    for i in arr:
+        if int(i)>0:
+            p+=1
+        
+        if int(i)<0:
+            l+=1
+        
+        if int(i)==0:
+            q+=1
+    
+    print(p/n)
+    print(l/n)
+    print(q/n)
+
+        
+
+if __name__ == '__main__':
+    n = int(input())
+
+    arr = list(map(int, input().rstrip().split()))
+
+    plusMinus(arr)
+
+2.Mini-Max Sum
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the miniMaxSum function below.
+def miniMaxSum(arr):
+    d=0
+    for i in range(len(arr)):
+        d=d+arr[i]
+    print((d-max(arr)),(d-min(arr)))
+
+if __name__ == '__main__':
+    arr = list(map(int, input().rstrip().split()))
+
+    miniMaxSum(arr)
+
+3.Time Conversion
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+/*
+ * Complete the 'timeConversion' function below.
+ *
+ * The function is expected to return a STRING.
+ * The function accepts STRING s as parameter.
+ */
+
+string timeConversion(string s) {
+    int size = s.length();
+    if(s[size-2]=='A'){
+        string hh = s.substr(0,2);
+        int h = stoi(hh);
+        if(h==12){
+            string newh = "00";
+            string newTime = newh.append(s.substr(2,6));
+            return newTime;
+        }else{
+            return s.substr(0,size-2);
+        } 
+    } 
+    else{
+        string hh = s.substr(0,2);
+        int h = stoi(hh);
+        if(h==12){
+            return s.substr(0,size-2);
+        }
+        int inPM = h+12;
+        string newh = to_string(inPM);
+        string newTime = newh.append(s.substr(2,6));
+        return newTime;
+    }
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string s;
+    getline(cin, s);
+
+    string result = timeConversion(s);
+
+    fout << result << "\n";
+
+    fout.close();
+
+    return 0;
+}
+
+4. Find the Median
+#!/bin/python3
+
+import sys
+
+def findMedian(arr):
+    arr = sorted(arr)
+    return arr[len(arr)//2]
+
+if __name__ == "__main__":
+    n = int(input().strip())
+    arr = list(map(int, input().strip().split(' ')))
+    result = findMedian(arr)
+    print(result)
+
+5.Lonely Integer
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
+
+/*
+ * Complete the 'lonelyinteger' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts INTEGER_ARRAY a as parameter.
+ */
+
+int lonelyinteger(std::vector<int> const & _vec) {
+    int lonelyInt = 0;
+    for(auto const & _num : _vec){
+        lonelyInt ^= _num;
+    }
+    return lonelyInt;
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string n_temp;
+    getline(cin, n_temp);
+
+    int n = stoi(ltrim(rtrim(n_temp)));
+
+    string a_temp_temp;
+    getline(cin, a_temp_temp);
+
+    vector<string> a_temp = split(rtrim(a_temp_temp));
+
+    vector<int> a(n);
+
+    for (int i = 0; i < n; i++) {
+        int a_item = stoi(a_temp[i]);
+
+        a[i] = a_item;
+    }
+
+    int result = lonelyinteger(a);
+
+    fout << result << "\n";
+
+    fout.close();
+
+    return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
+
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
+}
+
+6.Diagonal Difference
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'diagonalDifference' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts 2D_INTEGER_ARRAY arr as parameter.
+#
+
+def diagonalDifference(arr):
+    # Write your code here
+    fd,sd = 0,0
+    for i in  range(len(arr)):
+        print(i)
+        fd += arr[i][i]
+        sd += arr[i][(len(arr)-1)-i]
+        print(fd,sd)
+    return abs(fd - sd)
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    arr = []
+
+    for _ in range(n):
+        arr.append(list(map(int, input().rstrip().split())))
+
+    result = diagonalDifference(arr)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
+
+7. Counting Sort 1
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from collections import Counter
+
+#
+# Complete the 'countingSort' function below.
+#
+# The function is expected to return an INTEGER_ARRAY.
+# The function accepts INTEGER_ARRAY arr as parameter.
+#
+
+def countingSort(arr):
+    response = {i: 0 for i in range(100)}
+    response.update(Counter(arr).items())
+    return response.values()
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    arr = list(map(int, input().rstrip().split()))
+
+    result = countingSort(arr)
+
+    fptr.write(' '.join(map(str, result)))
+    fptr.write('\n')
+
+    fptr.close()
+
+8. Filpping the Matrix
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'flippingMatrix' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts 2D_INTEGER_ARRAY matrix as parameter.
+#
+
+def flippingMatrix(matrix):
+    rows = len(matrix)
+    cols = len(matrix[0])
+    sum = 0
+    for i in range(0, rows//2):
+        for j in range(0, cols//2):
+            sum += max(matrix[i][j], matrix[i][cols-j-1], matrix[rows-1-i][j], matrix[rows-1-i][cols-1-j])
+    
+    return sum
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input().strip())
+
+    for q_itr in range(q):
+        n = int(input().strip())
+
+        matrix = []
+
+        for _ in range(2 * n):
+            matrix.append(list(map(int, input().rstrip().split())))
+
+        result = flippingMatrix(matrix)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
+
+9. Zig Zag Sequence
+In this challenge, the task is to debug the existing code to successfully execute all provided test files.
+
+Given an array of  distinct integers, transform the array into a zig zag sequence by permuting the array elements. A sequence will be called a zig zag sequence if the first  elements in the sequence are in increasing order and the last  elements are in decreasing order, where . You need to find the lexicographically smallest zig zag sequence of the given array.
+
+def findZigZagSequence(a, n):
+    a.sort()
+    mid = int((n - 1)/2)
+    a[mid], a[n-1] = a[n-1], a[mid]
+
+    st = mid + 1
+    ed = n - 2
+    while(st <= ed):
+        a[st], a[ed] = a[ed], a[st]
+        st = st + 1
+        ed = ed - 1
+
+    for i in range (n):
+        if i == n-1:
+            print(a[i])
+        else:
+            print(a[i], end = ' ')
+    return
+
+test_cases = int(input())
+for cs in range (test_cases):
+    n = int(input())
+    a = list(map(int, input().split()))
+    findZigZagSequence(a, n)
+
+10. Tower Breakers
+
+Two players are playing a game of Tower Breakers! Player  always moves first, and both players always play optimally.The rules of the game are as follows:
+
+Initially there are  towers.
+Each tower is of height .
+The players move in alternating turns.
+In each turn, a player can choose a tower of height  and reduce its height to , where  and  evenly divides .
+If the current player is unable to make a move, they lose the game.
+Given the values of  and , determine which player will win. If the first player wins, return . Otherwise, return .
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
+
+/*
+ * Complete the 'towerBreakers' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER n
+ *  2. INTEGER m
+ */
+
+int towerBreakers(int _quantity,int const & _height){
+    return _quantity % 2 == 0 || _height == 1 ? 2 : 1;
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string t_temp;
+    getline(cin, t_temp);
+
+    int t = stoi(ltrim(rtrim(t_temp)));
+
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        string first_multiple_input_temp;
+        getline(cin, first_multiple_input_temp);
+
+        vector<string> first_multiple_input = split(rtrim(first_multiple_input_temp));
+
+        int n = stoi(first_multiple_input[0]);
+
+        int m = stoi(first_multiple_input[1]);
+
+        int result = towerBreakers(n, m);
+
+        fout << result << "\n";
+    }
+
+    fout.close();
+
+    return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
+
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
+}
+
+11. Caesar Cipher
+Submissions	Leaderboard	Discussions	Editorial
+Julius Caesar protected his confidential information by encrypting it using a cipher. Caesar's cipher shifts each letter by a number of letters. If the shift takes you past the end of the alphabet, just rotate back to the front of the alphabet. In the case of a rotation by 3, w, x, y and z would map to z, a, b and c.
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'caesarCipher' function below.
+#
+# The function is expected to return a STRING.
+# The function accepts following parameters:
+#  1. STRING s
+#  2. INTEGER k
+#
+def caesarCipher(s, k):
+    encrypted = ''
+    for char in s:
+        if char.isalpha():
+            base = ord('a') if char.islower() else ord('A')
+            encrypted += chr((ord(char) - base + k) % 26 + base)
+        else:
+            encrypted += char
+    return encrypted
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    s = input()
+
+    k = int(input().strip())
+
+    result = caesarCipher(s, k)
+
+    fptr.write(result + '\n')
+
+    fptr.close()
+
+12. Palindrome Index
+Given a string of lowercase letters in the range ascii[a-z], determine the index of a character that can be removed to make the string a palindrome. There may be more than one solution, but any will do. If the word is already a palindrome or there is no solution, return -1. Otherwise, return the index of a character to remove.
+
+Example
+
+Either remove 'b' at index  or 'c' at index .
+
+Function Description
+
+Complete the palindromeIndex function in the editor below.
+
+palindromeIndex has the following parameter(s):
+
+string s: a string to analyze
+Returns
+
+int: the index of the character to remove or 
+Input Format
+
+The first line contains an integer , the number of queries.
+Each of the next  lines contains a query string .
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'palindromeIndex' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts STRING s as parameter.
+#
+
+def palindromeIndex(s):
+    
+    def isPalindrome(s):
+        half = len(s)//2
+        return s[:half]==s[half+len(s)%2:][::-1]
+    
+    left, right = 0, len(s)-1
+    
+    while left < right:
+        if s[left] != s[right]:
+            return left if isPalindrome(s[:left]+s[left+1:]) else right
+        left += 1
+        right -= 1
+    
+    return -1
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input().strip())
+
+    for q_itr in range(q):
+        s = input()
+
+        result = palindromeIndex(s)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
