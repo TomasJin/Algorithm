@@ -1,0 +1,208 @@
+1. Grid Challenge
+Given a square grid of characters in the range ascii[a-z], rearrange elements of each row alphabetically, ascending. Determine if the columns are also in ascending alphabetical order, top to bottom. Return YES if they are or NO if they are not.
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'gridChallenge' function below.
+#
+# The function is expected to return a STRING.
+# The function accepts STRING_ARRAY grid as parameter.
+#
+
+def gridChallenge(grid):
+    n = len(grid)
+    
+    for i in range(n - 1):
+        if max(grid[i]) > max(grid[i+1]) or min(grid[i]) > min(grid[i+1]):
+            return 'NO'
+    
+    return 'YES'
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    t = int(input().strip())
+
+    for t_itr in range(t):
+        n = int(input().strip())
+
+        grid = []
+
+        for _ in range(n):
+            grid_item = input()
+            grid.append(grid_item)
+
+        result = gridChallenge(grid)
+
+        fptr.write(result + '\n')
+
+    fptr.close()
+
+2. Recursive Digit Sum
+We define super digit of an integer  using the following rules:
+
+Given an integer, we need to find the super digit of the integer.
+
+If  has only  digit, then its super digit is .
+Otherwise, the super digit of  is equal to the super digit of the sum of the digits of .
+For example, the super digit of  will be calculated as:
+
+	super_digit(9875)   	9+8+7+5 = 29 
+	super_digit(29) 	2 + 9 = 11
+	super_digit(11)		1 + 1 = 2
+	super_digit(2)		= 2  
+
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'superDigit' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. STRING n
+#  2. INTEGER k
+#
+
+def superDigit(n, k):
+    sum = 0
+    for d in str(n):
+        if d != 9:
+            sum += int(d)
+        if sum >= 9:
+            sum += -9
+    ans = sum * k % 9
+    print(ans)
+    return 9 if ans == 0 else ans
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    n = first_multiple_input[0]
+
+    k = int(first_multiple_input[1])
+
+    result = superDigit(n, k)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
+
+3. New Year Chaos
+It is New Year's Day and people are in line for the Wonderland rollercoaster ride. Each person wears a sticker indicating their initial position in the queue from  to . Any person can bribe the person directly in front of them to swap positions, but they still wear their original sticker. One person can bribe at most two others.
+
+Determine the minimum number of bribes that took place to get to a given queue order. Print the number of bribes, or, if anyone has bribed more than two people, print Too chaotic.
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'minimumBribes' function below.
+#
+# The function accepts INTEGER_ARRAY q as parameter.
+#
+
+def minimumBribes(q):
+    q = [i-1 for i in q]  # set queue to start at 0
+    bribes = 0
+    
+    for i, o in enumerate(q):
+        cur = i 
+        if o - cur > 2:
+            print("Too chaotic")
+            return
+        for k in q[max(o - 1, 0):i]:
+            if k > o:
+                bribes += 1
+
+    print(bribes)
+
+if __name__ == '__main__':
+    t = int(input().strip())
+
+    for t_itr in range(t):
+        n = int(input().strip())
+
+        q = list(map(int, input().rstrip().split()))
+
+        minimumBribes(q)
+
+4. Truck Tour
+Suppose there is a circle. There are  petrol pumps on that circle. Petrol pumps are numbered  to  (both inclusive). You have two pieces of information corresponding to each of the petrol pump: (1) the amount of petrol that particular petrol pump will give, and (2) the distance from that petrol pump to the next petrol pump.
+
+Initially, you have a tank of infinite capacity carrying no petrol. You can start the tour at any of the petrol pumps. Calculate the first point from where the truck will be able to complete the circle. Consider that the truck will stop at each of the petrol pumps. The truck will move one kilometer for each litre of the petrol.
+
+Input Format
+
+The first line will contain the value of .
+The next  lines will contain a pair of integers each, i.e. the amount of petrol that petrol pump will give and the distance between that petrol pump and the next petrol pump.
+
+Constraints:
+
+
+Output Format
+
+An integer which will be the smallest index of the petrol pump from which we can start the tour.
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'truckTour' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts 2D_INTEGER_ARRAY petrolpumps as parameter.
+#
+
+def truckTour(petrolpumps):
+    start, cum = 0, 0
+    for i in range(len(petrolpumps)):
+        petrol, distance = petrolpumps[i]
+        cum += petrol - distance
+        if cum < 0:
+            start = i + 1
+            cum = 0
+    return start
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    petrolpumps = []
+
+    for _ in range(n):
+        petrolpumps.append(list(map(int, input().rstrip().split())))
+
+    result = truckTour(petrolpumps)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
