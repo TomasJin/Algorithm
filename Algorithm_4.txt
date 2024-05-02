@@ -1,0 +1,301 @@
+1. Simple Text Editor
+
+Implement a simple text editor. The editor initially contains an empty string, . Perform  operations of the following  types:
+
+append - Append string  to the end of .
+delete - Delete the last  characters of .
+print - Print the  character of .
+undo - Undo the last (not previously undone) operation of type  or , reverting  to the state it was in prior to that operation.
+
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+class Stack:
+    def __init__(self):
+        self.stacks = ""
+        self.undo = []
+    
+    def append(self, val):
+        self.undo.append(self.stacks)
+        self.stacks += val
+        
+    def delete(self, index):
+        val = self.stacks[:len(self.stacks)-index]
+        self.undo.append(self.stacks)
+        self.stacks = val
+        
+    def print_val(self, index):
+        print(self.stacks[index-1])
+    
+    def undo_operation(self):
+        if self.undo:
+            last = self.undo.pop()
+            self.stacks = last
+
+Q = int(input())
+stack = Stack()
+for _ in range(Q):
+    operation = input().split()
+
+    t = int(operation[0])
+
+    if t == 1:
+        stack.append(operation[1])
+    elif t == 2:
+        stack.delete(int(operation[1]))
+    elif t == 3:
+        stack.print_val(int(operation[1]))
+    elif t == 4:
+        stack.undo_operation()
+
+2. Lego Blocks
+
+You have an infinite number of 4 types of lego blocks of sizes given as (depth x height x width):
+
+d	h	w
+1	1	1
+1	1	2
+1	1	3
+1	1	4
+Using these blocks, you want to make a wall of height  and width . Features of the wall are:
+
+- The wall should not have any holes in it.
+- The wall you build should be one solid structure, so there should not be a straight vertical break across all rows of bricks.
+- The bricks must be laid horizontally.
+
+How many ways can the wall be built?
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+#define MOD 1000000007
+typedef long long ll;
+
+ll fast_exp (ll base, int exp) {
+    ll res = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) res = (res * base) % MOD;
+        base = (base * base) % MOD;
+        exp /= 2;
+    }
+    return (res % MOD);
+}        
+
+int main() {
+    int t, n, m;
+    cin >> t;
+    
+    while (t--) {
+        cin >> n >> m;
+        ll total[m+1];
+        for (int i = 0; i < m+1; i++) {
+            if (i == 0) total[0] = 1;
+            if (i == 1) total[1] = 1;
+            if (i == 2) total[2] = 2;
+            if (i == 3) total[3] = 4;
+            if (i > 3) total[i] = (total[i-1] + total[i-2] + total[i-3] + total[i-4]) % MOD;
+        }
+        
+        ll ways[m+1], cumWays;
+        ways[0] = 0;
+        ways[1] = 1;
+        for (int j = 2; j < m+1; j++) {
+            
+            cumWays = 0;
+            for (int i = 1; i < j; i++)
+                cumWays = (cumWays + (ways[i] * fast_exp(total[j-i], n)) % MOD) % MOD; 
+            
+            ways[j] = (fast_exp(total[j], n) - cumWays) % MOD;
+            if (ways[j] < 0) ways[j] = MOD + ways[j];
+        }
+        
+        cout << ways[m] << endl;
+    }
+}
+
+3. Jesse and Cookies
+Jesse loves cookies and wants the sweetness of some cookies to be greater than value . To do this, two cookies with the least sweetness are repeatedly mixed. This creates a special combined cookie with:
+
+sweetness  Least sweet cookie   2nd least sweet cookie).
+
+This occurs until all the cookies have a sweetness .
+
+Given the sweetness of a number of cookies, determine the minimum number of operations required. If it is not possible, return .
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
+
+/*
+ * Complete the 'cookies' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER k
+ *  2. INTEGER_ARRAY A
+ */
+
+int cookies(int k, vector<int> A) {
+    priority_queue <int, vector <int>, greater <int>> q; 
+    for(int i = 0; i < A.size(); i++){
+        q.push(A[i]);
+    }
+    int step = 0;
+    bool check = true;
+    while(1){
+        int min_s1 = q.top(); //1st smallest element
+        q.pop();
+        if(q.empty()){
+            if(min_s1 < k) check = false;
+            break;
+        }
+        if(min_s1 >= k) break;
+        int min_s2 = q.top(); //2nd smallest element
+        q.pop();
+        int new_s = min_s1 + 2 * min_s2;
+        q.push(new_s);
+        step++;
+    }
+    if(!check) step = -1;
+    return step;
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string first_multiple_input_temp;
+    getline(cin, first_multiple_input_temp);
+
+    vector<string> first_multiple_input = split(rtrim(first_multiple_input_temp));
+
+    int n = stoi(first_multiple_input[0]);
+
+    int k = stoi(first_multiple_input[1]);
+
+    string A_temp_temp;
+    getline(cin, A_temp_temp);
+
+    vector<string> A_temp = split(rtrim(A_temp_temp));
+
+    vector<int> A(n);
+
+    for (int i = 0; i < n; i++) {
+        int A_item = stoi(A_temp[i]);
+
+        A[i] = A_item;
+    }
+
+    int result = cookies(k, A);
+
+    fout << result << "\n";
+
+    fout.close();
+
+    return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
+
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
+}
+
+4.  Breadth First Search: Shortest Reach
+
+Consider an undirected graph where each edge weighs 6 units. Each of the nodes is labeled consecutively from 1 to n.
+
+You will be given a number of queries. For each query, you will be given a list of edges describing an undirected graph. After you create a representation of the graph, you must determine and report the shortest distance to each of the other nodes from a given starting position using the breadth-first search algorithm (BFS). Return an array of distances from the start node in node number order. If a node is unreachable, return -1  for that node.
+
+import os
+
+def rbfs(u, visited, adj, dist):
+    queue =[(u, 0)]
+    dist[u-1] = 0
+    visited[u-1] = True
+    
+    while queue:
+        i, j = queue.pop(0)
+        for k in adj[i]:
+            if visited[k-1] == False:
+                dist[k-1] = j+6
+                visited[k-1]= True
+                queue.append((k, j+6))
+    return dist
+                
+        
+        
+def bfs(n, m, edges, s):
+    adjList ={v: [] for v in range(1, n+1)}
+    for x, y in edges:
+        adjList[x].append(y)
+        adjList[y].append(x)
+        
+    visited = [False]*n
+    distance = [-1]*n
+    rbfs(s, visited, adjList, distance)
+    distance.pop(s-1)
+    return distance
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input().strip())
+
+    for q_itr in range(q):
+        first_multiple_input = input().rstrip().split()
+
+        n = int(first_multiple_input[0])
+
+        m = int(first_multiple_input[1])
+
+        edges = []
+
+        for _ in range(m):
+            edges.append(list(map(int, input().rstrip().split())))
+
+        s = int(input().strip())
+
+        result = bfs(n, m, edges, s)
+
+        fptr.write(' '.join(map(str, result)))
+        fptr.write('\n')
+
+    fptr.close()

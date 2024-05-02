@@ -1,0 +1,297 @@
+1. Merge two sorted linked lists
+
+Given pointers to the heads of two sorted linked lists, merge them into a single, sorted linked list. Either head pointer may be null meaning that the corresponding list is empty.
+
+Example
+ refers to 
+ refers to 
+
+The new list is 
+
+Function Description
+
+Complete the mergeLists function in the editor below.
+
+mergeLists has the following parameters:
+
+SinglyLinkedListNode pointer headA: a reference to the head of a list
+SinglyLinkedListNode pointer headB: a reference to the head of a list
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+class SinglyLinkedListNode:
+    def __init__(self, node_data):
+        self.data = node_data
+        self.next = None
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def insert_node(self, node_data):
+        node = SinglyLinkedListNode(node_data)
+
+        if not self.head:
+            self.head = node
+        else:
+            self.tail.next = node
+
+
+        self.tail = node
+
+def print_singly_linked_list(node, sep, fptr):
+    while node:
+        fptr.write(str(node.data))
+
+        node = node.next
+
+        if node:
+            fptr.write(sep)
+
+# Complete the mergeLists function below.
+
+#
+# For your reference:
+#
+# SinglyLinkedListNode:
+#     int data
+#     SinglyLinkedListNode next
+#
+#
+sys.setrecursionlimit(10**6)
+
+def mergeLists(head1, head2):
+    if head1 is None:
+        return head2
+    if head2 is None:
+        return head1
+    if head1.data <= head2.data:
+        head1.next = mergeLists(head1.next, head2)
+        return head1
+    else:
+        head2.next = mergeLists(head1, head2.next)
+        return head2
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    tests = int(input())
+
+    for tests_itr in range(tests):
+        llist1_count = int(input())
+
+        llist1 = SinglyLinkedList()
+
+        for _ in range(llist1_count):
+            llist1_item = int(input())
+            llist1.insert_node(llist1_item)
+            
+        llist2_count = int(input())
+
+        llist2 = SinglyLinkedList()
+
+        for _ in range(llist2_count):
+            llist2_item = int(input())
+            llist2.insert_node(llist2_item)
+
+        llist3 = mergeLists(llist1.head, llist2.head)
+
+        print_singly_linked_list(llist3, ' ', fptr)
+        fptr.write('\n')
+
+    fptr.close()
+
+2. Queue using Two Stacks
+
+A queue is an abstract data type that maintains the order in which elements were added to it, allowing the oldest elements to be removed from the front and new elements to be added to the rear. This is called a First-In-First-Out (FIFO) data structure because the first element added to the queue (i.e., the one that has been waiting the longest) is always the first one to be removed.
+
+A basic queue has the following operations:
+
+Enqueue: add a new element to the end of the queue.
+Dequeue: remove the element from the front of the queue and return it.
+In this challenge, you must first implement a queue using two stacks. Then process  queries, where each query is one of the following  types:
+
+1 x: Enqueue element  into the end of the queue.
+2: Dequeue the element at the front of the queue.
+3: Print the element at the front of the queue.
+Input Format
+
+The first line contains a single integer, , denoting the number of queries.
+Each line  of the  subsequent lines contains a single query in the form described in the problem statement above. All three queries start with an integer denoting the query , but only query  is followed by an additional space-separated value, , denoting the value to be enqueued.
+
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+class Queue:
+    def __init__(self):
+        self.data = []
+    
+    def enqueue(self, val):
+        self.data.append(val)
+    
+    def dequeue(self):
+        self.data.remove(self.data[0])
+    
+    def print(self):
+        print(self.data[0])
+
+n = int(input())
+queue = Queue()
+for i in range(n):
+    x = input().split()
+    if x[0] == '1':
+        queue.enqueue(x[1])
+    if x[0] == '2':
+        queue.dequeue()
+    if x[0] == '3':
+        queue.print()
+
+3. Balanced Brackets
+
+A bracket is considered to be any one of the following characters: (, ), {, }, [, or ].
+
+Two brackets are considered to be a matched pair if the an opening bracket (i.e., (, [, or {) occurs to the left of a closing bracket (i.e., ), ], or }) of the exact same type. There are three types of matched pairs of brackets: [], {}, and ().
+
+A matching pair of brackets is not balanced if the set of brackets it encloses are not matched. For example, {[(])} is not balanced because the contents in between { and } are not balanced. The pair of square brackets encloses a single, unbalanced opening bracket, (, and the pair of parentheses encloses a single, unbalanced closing square bracket, ].
+
+By this logic, we say a sequence of brackets is balanced if the following conditions are met:
+
+It contains no unmatched brackets.
+The subset of brackets enclosed within the confines of a matched pair of brackets is also a matched pair of brackets.
+Given  strings of brackets, determine whether each sequence of brackets is balanced. If a string is balanced, return YES. Otherwise, return NO.
+
+Function Description
+
+Complete the function isBalanced in the editor below.
+
+isBalanced has the following parameter(s):
+
+string s: a string of brackets
+Returns
+
+string: either YES or NO
+Input Format
+
+The first line contains a single integer , the number of strings.
+Each of the next  lines contains a single string , a sequence of brackets.
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+BRACKETS_MAP = {
+    '[': ']',
+    '{': '}',
+    '(': ')',
+}
+def isOpen(bracket):
+    return bracket in BRACKETS_MAP.keys()
+
+def isClose(bracket):
+    return bracket in BRACKETS_MAP.values()
+
+def isBalanced(s):
+    stack = []
+    for bracket in s:
+        if(isOpen(bracket)):
+            stack.append(bracket)
+        elif(isClose(bracket)):
+            if(stack == [] or bracket != BRACKETS_MAP.get(stack.pop())):
+                return ("NO")
+    if(stack != []):
+        return ("NO")
+    return ("YES")
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    t = int(input())
+
+    for t_itr in range(t):
+        s = input()
+
+        result = isBalanced(s)
+
+        fptr.write(result + '\n')
+
+    fptr.close()
+
+4. Pairs
+Given an array of integers and a target value, determine the number of pairs of array elements that have a difference equal to the target value.
+
+Example
+
+
+There are three values that differ by : , , and . Return .
+
+Function Description
+
+Complete the pairs function below.
+
+pairs has the following parameter(s):
+
+int k: an integer, the target difference
+int arr[n]: an array of integers
+Returns
+
+int: the number of pairs that satisfy the criterion
+Input Format
+
+The first line contains two space-separated integers  and , the size of  and the target value.
+The second line contains  space-separated integers of the array .
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'pairs' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER k
+#  2. INTEGER_ARRAY arr
+#
+
+def pairs(k, arr):
+    arr.sort()
+    d = dict()
+    res = 0
+    for i in range(len(arr)):
+        if arr[i] - k in d:
+            res += 1
+        d[arr[i]] = i
+    return res
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    n = int(first_multiple_input[0])
+
+    k = int(first_multiple_input[1])
+
+    arr = list(map(int, input().rstrip().split()))
+
+    result = pairs(k, arr)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
